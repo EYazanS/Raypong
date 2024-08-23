@@ -22,12 +22,15 @@ typedef struct {
 typedef struct {
     Paddle Paddless[2];
     Ball Ball;
+    int Player1Score;
+    int Player2Score;
+    float SleepTimer;
 } GameState;
 
 typedef struct {
     int ScreenWidth;
     int ScreenHeight;
-    int Maring;
+    int Margin;
 } Constants;
 
 #endif

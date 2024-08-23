@@ -13,15 +13,16 @@
 To build the game, you'll need to have the Raylib library installed on your system.
 
 1. **Clone the repository**:
-    ```bash
-    git clone https://github.com/EYazanS/Raypong.git
-    cd raypong
-    ```
+
+   ```bash
+   git clone https://github.com/EYazanS/Raypong.git
+   cd raypong
+   ```
 
 2. **Build the game**:
-    ```bash
-    make build
-    ```
+   ```bash
+   make build
+   ```
 
 This will compile the game and generate an executable file.
 
@@ -33,6 +34,17 @@ Once built, you can run the game with:
 make run
 ```
 
+This will start the game, and you can begin playing immediately.
+Cleaning Up
+
+### To clean up the build files, you can run:
+
+```bash
+make clean
+```
+
+This will remove all the compiled objects and the executable.
+
 ### Controls
 
-User 'W' and 'S' on keybaord to move left paddle up and down
+    Player 1 (Left Paddle): Use the W and S keys to move up and down.

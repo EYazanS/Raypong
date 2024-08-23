@@ -7,14 +7,14 @@ void reset_game(Constants constants, GameState *game_state) {
     game_state->Paddless[0].Width = 20;
     game_state->Paddless[0].Height = 60;
     game_state->Paddless[0].Speed = 10;
-    game_state->Paddless[0].Position.x = constants.Margin + game_state->Paddless[1].Width;
+    game_state->Paddless[0].Position.x = constants.Margin * 2 + game_state->Paddless[1].Width;
     game_state->Paddless[0].Position.y = (constants.ScreenHeight / 2) - (game_state->Paddless[0].Height / 2);
 
     game_state->Paddless[1].Color = GREEN;
     game_state->Paddless[1].Width = 20;
     game_state->Paddless[1].Height = 60;
     game_state->Paddless[1].Speed = 10;
-    game_state->Paddless[1].Position.x = constants.ScreenWidth - (constants.Margin + game_state->Paddless[1].Width);
+    game_state->Paddless[1].Position.x = constants.ScreenWidth - (constants.Margin * 2 + game_state->Paddless[1].Width);
     game_state->Paddless[1].Position.y = (constants.ScreenHeight / 2) - (game_state->Paddless[1].Height / 2);
 
     float x_velocity = (int)GetRandomValue(0, 1) ? 1.0f : -1.0f;
@@ -28,7 +28,17 @@ void reset_game(Constants constants, GameState *game_state) {
     game_state->Ball.Velocity.x = x_velocity;
     game_state->Ball.Velocity.y = y_velocity;
 
-    game_state->SleepTimer = 1000;
+    game_state->SleepTimer = 0.75f;
+}
+
+void clamp_to_field(Constants constants, Paddle *player) {
+    if (player->Position.y <= constants.Margin) {
+        player->Position.y = constants.Margin;
+    }
+
+    if ((player->Position.y + player->Height) >= (constants.ScreenHeight - constants.Margin)) {
+        player->Position.y = constants.ScreenHeight - constants.Margin - player->Height;
+    }
 }
 
 int main(void) {
@@ -37,7 +47,7 @@ int main(void) {
 
     constants.ScreenWidth = 800;
     constants.ScreenHeight = 450;
-    constants.Margin = 10;
+    constants.Margin = 20;
 
     GameState game_state = {};
 
@@ -54,11 +64,11 @@ int main(void) {
         // Update
         if (game_state.SleepTimer <= 0) {
             // Player movement
-            if (IsKeyDown(KEY_W) && player_1->Position.y > 0) {
+            if (IsKeyDown(KEY_W)) {
                 player_1->Position.y -= player_1->Speed;
             }
 
-            if (IsKeyDown(KEY_S) && (player_1->Position.y + (player_1->Height) < constants.ScreenHeight)) {
+            if (IsKeyDown(KEY_S)) {
                 player_1->Position.y += player_1->Speed;
             }
 
@@ -71,6 +81,9 @@ int main(void) {
                 player_2->Position.y += player_2->Speed;
             }
 
+            clamp_to_field(constants, player_1);
+            clamp_to_field(constants, player_2);
+
             Rectangle player_1_rect = {player_1->Position.x, player_1->Position.y, player_1->Width, player_1->Height};
             Rectangle player_2_rect = {player_2->Position.x, player_2->Position.y, player_2->Width, player_2->Height};
 
@@ -79,8 +92,8 @@ int main(void) {
             game_state.Ball.Position.y =
                 game_state.Ball.Position.y + (game_state.Ball.Speed * game_state.Ball.Velocity.y);
 
-            if (game_state.Ball.Position.y > constants.ScreenHeight + game_state.Ball.Radius ||
-                game_state.Ball.Position.y + game_state.Ball.Radius < 0) {
+            if ((game_state.Ball.Position.y + game_state.Ball.Radius >= constants.ScreenHeight - constants.Margin) ||
+                ((game_state.Ball.Position.y - game_state.Ball.Radius) <= constants.Margin)) {
                 game_state.Ball.Velocity.y *= -1;
             }
 
@@ -107,7 +120,7 @@ int main(void) {
             }
         }
 
-        game_state.SleepTimer -= (GetFrameTime() * 1000);
+        game_state.SleepTimer -= GetFrameTime();
 
         // Draw
         BeginDrawing();
@@ -124,10 +137,25 @@ int main(void) {
         DrawCircle(game_state.Ball.Position.x, game_state.Ball.Position.y, game_state.Ball.Radius,
                    game_state.Ball.Color);
 
-        DrawText(TextFormat("Player 1: %i", game_state.Player1Score), (constants.ScreenWidth / 5), constants.Margin * 2,
-                 24, GREEN);
-        DrawText(TextFormat("Player 2: %i", game_state.Player2Score), (constants.ScreenWidth / 5) * 3,
-                 constants.Margin * 2, 24, GREEN);
+        DrawLine(constants.ScreenWidth / 2, constants.Margin, constants.ScreenWidth / 2,
+                 constants.ScreenHeight - constants.Margin, WHITE);
+
+        DrawLine(constants.Margin, constants.Margin, constants.Margin, constants.ScreenHeight - constants.Margin,
+                 WHITE);
+
+        DrawLine(constants.ScreenWidth - constants.Margin, constants.Margin, constants.ScreenWidth - constants.Margin,
+                 constants.ScreenHeight - constants.Margin, WHITE);
+
+        DrawLine(constants.Margin, constants.Margin, constants.ScreenWidth - constants.Margin, constants.Margin, WHITE);
+
+        DrawLine(constants.Margin, constants.ScreenHeight - constants.Margin, constants.ScreenWidth - constants.Margin,
+                 constants.ScreenHeight - constants.Margin, WHITE);
+
+        DrawText(TextFormat("%i", game_state.Player1Score), (constants.ScreenWidth / 5), constants.Margin * 2,
+                 24, WHITE);
+
+        DrawText(TextFormat("%i", game_state.Player2Score), (constants.ScreenWidth / 5) * 4,
+                 constants.Margin * 2, 24, WHITE);
 
         EndDrawing();
     }

@@ -43,7 +43,7 @@ int main(void) {
 
     reset_game(constants, &game_state);
 
-    InitWindow(constants.ScreenWidth, constants.ScreenHeight, "Snakrray");
+    InitWindow(constants.ScreenWidth, constants.ScreenHeight, "Raypong");
 
     SetTargetFPS(60);
 

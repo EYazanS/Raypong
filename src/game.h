@@ -4,6 +4,7 @@
 #include <raylib.h>
 
 typedef struct {
+    int Height;
     int Width;
     float Speed;
     Vector2 Location;
@@ -11,7 +12,7 @@ typedef struct {
 } Paddle;
 
 typedef struct {
-    float Raduis;
+    float Radius;
     float Speed;
     Vector2 Location;
     Vector2 Velocity;

@@ -1,5 +1,5 @@
 CC=gcc
-CCFLAGS=-lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CCFLAGS=-g -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 SRC=./src/main.c
 
 all:    build

@@ -7,14 +7,14 @@ typedef struct {
     int Height;
     int Width;
     float Speed;
-    Vector2 Location;
+    Vector2 Position;
     Color Color;
 } Paddle;
 
 typedef struct {
     float Radius;
     float Speed;
-    Vector2 Location;
+    Vector2 Position;
     Vector2 Velocity;
     Color Color;
 } Ball;

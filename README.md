@@ -48,3 +48,8 @@ This will remove all the compiled objects and the executable.
 ### Controls
 
     Player 1 (Left Paddle): Use the W and S keys to move up and down.
+
+
+### License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -12,3 +12,6 @@ build: ./**/*.c ./**/*.h
 
 run: build
 	@./build/game
+
+clean:
+	@rm -rf ./build
